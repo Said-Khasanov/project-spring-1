@@ -8,6 +8,8 @@ import com.khasanov.projectspring1.mapper.TaskMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static java.util.Objects.requireNonNullElse;
 
 @RequiredArgsConstructor
@@ -15,6 +17,12 @@ import static java.util.Objects.requireNonNullElse;
 public class TaskService {
     private final TaskDao taskDao;
     private final TaskMapper taskMapper;
+
+    public List<TaskResponseTo> getTasks() {
+        return taskDao.findAll().stream()
+                .map(taskMapper::toTaskResponseTo)
+                .toList();
+    }
 
     public TaskResponseTo getTaskById(Integer id) {
         Task task = taskDao.findById(id).orElseThrow();

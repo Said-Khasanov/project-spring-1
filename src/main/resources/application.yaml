@@ -3,7 +3,7 @@ spring:
     name: project-spring-1
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306
+    url: jdbc:mysql://localhost:3306/todo
     username: root
     password: admin
   jpa:

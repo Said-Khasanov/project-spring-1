@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="com_bootstrap_3.0.0_css_bootstrap.css" rel="stylesheet" id="bootstrap-css">
+    <link href="style.css" rel="stylesheet">
+    <script src="com_bootstrap_3.0.0_js_bootstrap.js"></script>
+    <script src="com_jquery-1.11.1.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row col-md-6 col-md-offset-2 custyle">
+        <a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new task</a>
+        <table class="table table-striped custab">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tr th:each="task: ${tasks}">
+                <td th:text="${task.getId()}">1</td>
+                <td th:text="${task.getDescription()}">Description</td>
+                <td th:text="${task.getStatus()}">2</td>
+                <td class="text-center">
+                    <a href="#" class='btn btn-info btn-xs'>Edit</a>
+                    <a href="#" class="btn btn-danger btn-xs">Del</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: project-spring-1
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306
+    username: root
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8084

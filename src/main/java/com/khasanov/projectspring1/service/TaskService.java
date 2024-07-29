@@ -6,9 +6,9 @@ import com.khasanov.projectspring1.dto.TaskResponseTo;
 import com.khasanov.projectspring1.entity.Task;
 import com.khasanov.projectspring1.mapper.TaskMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static java.util.Objects.requireNonNullElse;
 
@@ -18,15 +18,13 @@ public class TaskService {
     private final TaskDao taskDao;
     private final TaskMapper taskMapper;
 
-    public List<TaskResponseTo> getTasks() {
-        return taskDao.findAll().stream()
-                .map(taskMapper::toTaskResponseTo)
-                .toList();
+    public Page<TaskResponseTo> getTasks(PageRequest pageRequest) {
+        return taskDao.findAll(pageRequest).map(taskMapper::toTaskResponseTo);
     }
 
-    public TaskResponseTo getTaskById(Integer id) {
+    public void getTaskById(Integer id) {
         Task task = taskDao.findById(id).orElseThrow();
-        return taskMapper.toTaskResponseTo(task);
+        taskMapper.toTaskResponseTo(task);
     }
 
     public TaskResponseTo createTask(TaskRequestTo taskRequestTo) {

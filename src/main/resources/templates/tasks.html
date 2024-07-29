@@ -8,13 +8,13 @@
     <title>Document</title>
     <link href="com_bootstrap_3.0.0_css_bootstrap.css" rel="stylesheet" id="bootstrap-css">
     <link href="style.css" rel="stylesheet">
-    <script src="com_bootstrap_3.0.0_js_bootstrap.js"></script>
-    <script src="com_jquery-1.11.1.js"></script>
 </head>
 <body>
 <div class="container">
+    <div class="row col-md-6 col-md-offset-2">
+        <a href="/new-task" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new task</a>
+    </div>
     <div class="row col-md-6 col-md-offset-2 custyle">
-        <a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new task</a>
         <table class="table table-striped custab">
             <thead>
                 <tr>
@@ -26,15 +26,46 @@
             </thead>
             <tr th:each="task: ${tasks}">
                 <td th:text="${task.getId()}">1</td>
-                <td th:text="${task.getDescription()}">Description</td>
-                <td th:text="${task.getStatus()}">2</td>
+                <td th:text="${task.getDescription()}" contenteditable="true">Description</td>
+                <td th:text="${task.getStatus()}" contenteditable="true">2</td>
                 <td class="text-center">
-                    <a href="#" class='btn btn-info btn-xs'>Edit</a>
-                    <a href="#" class="btn btn-danger btn-xs">Del</a>
+                    <button
+                            th:id="|edit_${task.getId()}|"
+                            th:onclick="|edit_task(${task.getId()})|"
+                            class='btn btn-info btn-xs'>Edit</button>
+
+                    <button th:id="|delete_${task.getId()}|"
+                            th:onclick="|delete_task(${task.getId()})|"
+                            class="btn btn-danger btn-xs">Del</button>
                 </td>
             </tr>
         </table>
     </div>
+
+    
+    <div class="row col-md-6 col-md-offset-2">
+        <ul class="pagination">
+            <li th:each="i : ${#numbers.sequence(1, totalPages)}">
+                <a th:href="|@{/?page=}${i}|" th:text="${i}"></a>
+            </li>
+        </ul>
+    </div>
 </div>
+<script
+        src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+<script src="com_bootstrap_3.0.0_js_bootstrap.js"></script>
+<script>
+    function delete_task(id) {
+        $.ajax({
+            url: '/' + id,
+            method: 'DELETE',
+            success: function () {
+               window.location.reload();
+            }
+        });
+    }
+</script>
 </body>
 </html>

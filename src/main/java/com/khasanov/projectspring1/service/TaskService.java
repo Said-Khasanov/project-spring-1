@@ -18,27 +18,27 @@ public class TaskService {
     private final TaskDao taskDao;
     private final TaskMapper taskMapper;
 
-    public Page<TaskResponseTo> getTasks(PageRequest pageRequest) {
-        return taskDao.findAll(pageRequest).map(taskMapper::toTaskResponseTo);
+    public Page<TaskResponseTo> getTasks(Integer page, Integer size) {
+        page = Math.max(page - 1, 0);
+        return taskDao.findAll(PageRequest.of(page, size)).map(taskMapper::toTaskResponseTo);
     }
 
-    public void getTaskById(Integer id) {
-        Task task = taskDao.findById(id).orElseThrow();
-        taskMapper.toTaskResponseTo(task);
+    private Task getTaskById(Integer id) {
+        return taskDao.findById(id).orElseThrow();
     }
 
-    public TaskResponseTo createTask(TaskRequestTo taskRequestTo) {
+    public void createTask(TaskRequestTo taskRequestTo) {
         Task task = taskMapper.toTask(taskRequestTo);
         Task taskInDb = taskDao.save(task);
-        return taskMapper.toTaskResponseTo(taskInDb);
+        taskMapper.toTaskResponseTo(taskInDb);
     }
 
-    public TaskResponseTo updateTask(TaskRequestTo taskRequestTo) {
-        Task task = taskMapper.toTask(taskRequestTo);
+    public void updateTask(TaskRequestTo taskRequestTo) {
+        Task task = getTaskById(taskRequestTo.getId());
         task.setDescription(requireNonNullElse(taskRequestTo.getDescription(), task.getDescription()));
         task.setStatus(requireNonNullElse(taskRequestTo.getStatus(), task.getStatus()));
         Task taskInDb = taskDao.save(task);
-        return taskMapper.toTaskResponseTo(taskInDb);
+        taskMapper.toTaskResponseTo(taskInDb);
     }
 
     public void deleteTask(Integer id) {
